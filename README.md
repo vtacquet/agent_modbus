@@ -1,6 +1,6 @@
 # agent_modbus
 
-agent_modbus is a plugin for [checkmk](https://checkmk.com/) to poll a tcp modbus system 
+agent_modbus is a plugin for [checkmk](https://checkmk.com/) to poll a tcp modbus system, this is an update to my 1.0 version from 2013 (now adding modbus slave as a third parameter)
 
 
 ## Dependencies
