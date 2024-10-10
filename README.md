@@ -15,7 +15,7 @@ g++ -Wall -I/usr/include/modbus -L/usr/lib/x86_64-linux-gnu agent_modbus.cpp -lm
 
 ## Usage
 ```
-agent_modbus - Vincent Tacquet - 2023 - vincent.tacquet@gmail.com
+agent_modbus - Vincent Tacquet - 2024 - vincent.tacquet@gmail.com
 version 2.1
 
 usage:   agent_modbus <host ip> <host port> <slave> <address:#words(1 or 2):counter|gauge:name> (<address:#words(1 or 2):counter|gauge:name>) ...
