@@ -1,4 +1,4 @@
-// agent_modbus 2.0
+// agent_modbus 2.1
 //
 // vincent.tacquet@gmail.com
 // http://www.tacquet.be
@@ -11,12 +11,10 @@
 #include <iostream>
 #include <modbus.h>
 
-void print_usage(int exitcode)
-
-{
+void print_usage(int exitcode) {
   printf("-----------------------------------------------------------------\n");
-  printf("agent_modbus - Vincent Tacquet - 2023 - vincent.tacquet@gmail.com\n");
-  printf("version 2.0\n\n");
+  printf("agent_modbus - Vincent Tacquet - 2024 - vincent.tacquet@gmail.com\n");
+  printf("version 2.1\n\n");
   printf("usage:   agent_modbus <host ip> <host port> <slave> <address:#words(1 or 2):counter|gauge:name> (<address:#words(1 or 2):counter|gauge:name>) ...\n");
   printf("example: agent_modbus 192.168.0.1 502 3 856:2:counter:active_energy 790:2:gauge:active_power\n");
   printf("-----------------------------------------------------------------\n\n");
@@ -24,8 +22,7 @@ void print_usage(int exitcode)
 
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
   modbus_t *mb;
   uint16_t tab_reg[32];
   uint32_t mb_doubleword;
@@ -41,8 +38,7 @@ int main(int argc, char *argv[])
   mb_slave = atoi(argv[3]);
 
   mb = modbus_new_tcp(argv[1], tcp_port);
-  if (mb == NULL)
-  {
+  if (mb == NULL) {
     fprintf(stderr, "failed to create modbus tcp context\n");
     return 1;
   }
@@ -51,8 +47,7 @@ int main(int argc, char *argv[])
 
   int args = 4;
 
-  while (args < argc)
-  {
+  while (args < argc) {
     char* chk;
     chk = strtok(argv[args],":");
     int counter = 0;
@@ -73,39 +68,28 @@ int main(int argc, char *argv[])
       chk = strtok(NULL,":");
     }
 
-
-    if (counter == 4)
-    {
+    if (counter == 4) {
       rc = modbus_read_registers(mb, mb_address, mb_words, tab_reg);
-      if (rc == -1)
-      {
+      if (rc == -1) {
         fprintf(stderr, "error:   %s\n", modbus_strerror(errno));
         return -1;
       }
 
-      if (args == 3)
-      {
+      if (args == 4) {
         printf("<<<modbus_value>>>\n");
       }
 
-      if (mb_words == 1)
-      {
+      if (mb_words == 1) {
         printf("%d %d %s %s\n", mb_address, tab_reg[0], mb_cg, mb_name);
-      }
-      else if (mb_words == 2)
-      {
+      } else if (mb_words == 2) {
         mb_doubleword = 0;
         mb_doubleword = tab_reg[0] << 16;
         mb_doubleword += tab_reg[1];
         printf("%d %d %s %s\n", mb_address, mb_doubleword, mb_cg, mb_name);
-      }
-      else
-      {
+      } else {
         exit(2);
       }
-    }
-    else
-    {
+    } else {
       exit(2);
     }
     args++;
